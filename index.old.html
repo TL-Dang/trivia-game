@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Random Facts</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+</head>
+<body> 
+    <h1>Random Trivia Game</h1>
+    <h4>Time Remaining: <span class="time"></span></h4>
+    <div class="container">
+        
+    </div>
+    <a class="waves-effect waves-light btn-small finishQuiz">Finish</a>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script>
+    let questions = [
+        {
+        id: 0,
+        question: 'How much hotter is a lighting bolt compared to the surface of the sun?',
+        choices: ['Twice as hot', 'Thice as hot', 'Four times as hot', 'Five times as hot', 'A lighting bolt is not hotter than the surface of the sun'],
+        correct: 'Five times as hot',
+    },
+        {
+        id: 1,
+        question: '"Pink Slime" is a by product of what type of meat?',
+        choices: ['Chicken', 'Beef', 'Pork', 'Fish', 'Tofu'],
+        correct: 'Beef',
+    },
+        {
+        id: 2,
+        question: 'How much wood would a woodchuck chuck if a woodchuck could chuck wood?',
+        choices: ['A woodchuck would chuck as much wood as a woodchuck could chuck if a woodchuck could chuck wood', 'Infinity', '100 tons', 'I dunno', 'One tree per day'],
+        correct: 'A woodchuck would chuck as much wood as a woodchuck could chuck if a woodchuck could chuck wood',
+    },
+        {
+        id: 3,
+        question: 'In 1940, the first McDonalds opened in _________.',
+        choices: ['Downey, CA', 'San Bernardino, CA', 'Cincinnati, OH', 'Eerie, IN', 'Atlantic City, NJ'],
+        correct: 'San Bernardino, CA',
+    },
+        {
+        id: 4,
+        question: 'The driest place on Earth is ...?',
+        choices: ['Death Valley, USA', 'Aswan, Egypt', 'Atacama Desert, Chile', 'Ica, Peru', 'McMurdo Dry Valleys, Antarctica'],
+        correct: 'McMurdo Dry Valleys, Antarctica',
+    },
+        {
+        id: 5,
+        question: 'The only jockey to win a race while decreased is ...?',
+        choices: ['Frank Hayes', 'Isaac Burns Murphy', 'Jimmy Savile', ' Aldo Montoya', 'Pat Day'],
+        correct: 'Frank Hayes',
+    },
+        {
+        id: 6,
+        question: 'The largest freshwater lake by surface area is ...?',
+        choices: ['Great Bear Lake', 'Lake Tahoe', 'Lake Superior', 'Lake Huron', 'Lake Michigan'],
+        correct: 'Lake Superior',
+    },
+        {
+        id: 7,
+        question: 'What domesticated cat breed runs the fastest?',
+        choices: ['American Shorthair', 'Siamese', 'Ocicat', 'Manx', 'Egyptian Mau'],
+        correct: 'Egyptian Mau',
+    },
+        {
+        id: 8,
+        question: 'Which animal has the strongest bite?',
+        choices: ['Flying Squirrel', 'Nile Crocodile', 'Snapping Turtle', 'Siberian Tiger', 'Hippopotamus'],
+        correct: 'Nile Crocodile',
+    },
+        {
+        id: 9,
+        question: 'The largest freshwater lake by volume is ...?',
+        choices: ['Lake Victoria', 'Lake Tanganyika', 'Lake Superior', 'Lake Baikal', 'Lake Marion'],
+        correct: 'Lake Baikal',
+    }
+    ]
+    questions.forEach(question => {
+        $('.container').append(`
+        <div class="row">
+            <h5 class="question">${question.question}</h5>
+                <p>
+                    <label>
+                        <input class="with-gap" id="choice" data-choice="${question.choices[0]}" name="question-${question.id}" type="radio"  />
+                        <span>${question.choices[0]}</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input class="with-gap" id="choice" data-choice="${question.choices[1]}" name="question-${question.id}" type="radio"  />
+                        <span>${question.choices[1]}</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input class="with-gap" id="choice" data-choice="${question.choices[2]}" name="question-${question.id}" type="radio"  />
+                        <span>${question.choices[2]}</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input class="with-gap" id="choice" data-choice="${question.choices[3]}" name="question-${question.id}" type="radio"  />
+                        <span>${question.choices[3]}</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input class="with-gap" id="choice" data-choice="${question.choices[4]}" name="question-${question.id}" type="radio"  />
+                        <span>${question.choices[4]}</span>
+                    </label>
+                </p>
+            <p class="answer-${question.id}" style="visibility: hidden">${question.correct}</p>
+        </div>
+        `)
+    })
+
+    var qChoice0
+    var qChoice1
+    var qChoice2
+    var qChoice3
+    var qChoice4
+
+    $(document).on('click', '#choice', function () {
+        console.log($(this).attr('name'))
+        console.log($(this).attr('data-choice'))
+        let temp = $(this).attr('name').split('-')
+        let qId = temp[1]
+        window[`qChoice${qId}`] = $(this).attr('data-choice')
+    })
+
+    $('.finishQuiz').on('click', function () {
+        finishGame()
+    })
+
+    function finishGame () {
+        clearInterval(gameTimer)
+        count = 0
+        for (let i = 0; i < questions.length; i++) {
+            $(`.answer-${i}`).css('visibility', 'visible')
+            if (window[`qChoices${i}`] === questions[i].correct) {
+                count++
+            }
+        }
+        if (count === 10) {
+            alert('Perfect Score!')
+        } else {
+            alert('Try Again!')
+        }
+    }
+
+function timeConversion (t) {
+    var minutes = Math.floor(t / 60)
+    var seconds = t - (minutes * 60)
+
+    if (seconds < 10) {
+      seconds = '0' + seconds
+    }
+
+    if (minutes === 0) {
+      minutes = '00'
+    } else if (minutes < 10) {
+      minutes = '0' + minutes
+    }
+
+    return minutes + ':' + seconds
+  }
+
+    let time = 120
+    $('.time').html('02:00')
+
+    let gameTimer = setInterval(function () {
+        time--
+        if (time > 0) {
+        $('.time').html(timeConversion(time))
+        } else {
+        $('.time').html('02:00')
+        finishGame()
+    }
+    }, 1000)
+</script>
+    
+</body>
+</html>
