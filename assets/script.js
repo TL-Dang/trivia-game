@@ -106,3 +106,23 @@ const questions = [
     correct: 3,
   },
 ];
+
+let currentQuestion = 0;
+let score = 0;
+let timeLeft = 120;
+
+function displayQuestion() {
+  const question = questions[currentQuestion];
+  document.querySelector('.question').textContent = question.question;
+
+  const choices = document.querySelector('.choices');
+  options.innerHTML = '';
+  question.choices.forEach((choice, index) => {
+    const li = document.createElement('li');
+    li.textContent = choice;
+    li.addEventListener('click', () => selectOption(index));
+    options.appendChild(li);
+  });
+
+  startTimer();
+}
