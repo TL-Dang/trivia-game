@@ -126,3 +126,32 @@ function displayQuestion() {
 
   startTimer();
 }
+
+function selectChoice(index) {
+  const choices = document.querySelectorAll('.choices li');
+  choices.forEach((choice) => choice.classList.remove('selected'));
+  choices[index].classList.add('selected');
+}
+
+function checkAnswer() {
+  const selectedChoice = document.querySelector('.choices li.selected');
+  if (selectedChoice) {
+    const selectedIndex = Array.from(
+      selectedChoice.parentNode.children
+    ).indexOf(selectedChoice);
+    if (selectedIndex === questions[currentQuestion].answer) {
+      score++;
+    }
+    document.querySelector('.result').textContent = `Score: ${score}/${
+      currentQuestion + 1
+    }`;
+  }
+}
+
+function nextQuestion() {
+  checkAnswer();
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    displayQuestion();
+  }
+}
